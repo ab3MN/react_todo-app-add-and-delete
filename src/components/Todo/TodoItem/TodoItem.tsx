@@ -3,12 +3,12 @@ import { Todo } from '../../../types/Todo';
 import cn from 'classnames';
 import { TodosContext } from '../../../context/TodoContext';
 
-interface IProps {
+interface TodoItemProps {
   todo: Todo;
   isLoading?: boolean;
 }
 
-export const TodoItem: FC<IProps> = ({ todo, isLoading = false }) => {
+export const TodoItem: FC<TodoItemProps> = ({ todo, isLoading = false }) => {
   const [isDeleting, setDeliting] = useState(false);
   const { deleteTodo, onFocus } = useContext(TodosContext);
 
@@ -26,7 +26,6 @@ export const TodoItem: FC<IProps> = ({ todo, isLoading = false }) => {
 
   return (
     <div data-cy="Todo" className={cn('todo', { completed })}>
-      {/* eslint-disable jsx-a11y/label-has-associated-control */}
       <label className="todo__status-label">
         <input
           data-cy="TodoStatus"
@@ -36,11 +35,9 @@ export const TodoItem: FC<IProps> = ({ todo, isLoading = false }) => {
           onChange={() => {}}
         />
       </label>
-
       <span data-cy="TodoTitle" className="todo__title">
         {title.trim()}
       </span>
-
       <button
         type="button"
         className="todo__remove"

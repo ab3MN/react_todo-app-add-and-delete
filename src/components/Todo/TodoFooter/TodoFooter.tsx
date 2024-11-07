@@ -11,13 +11,17 @@ import {
 } from '../../../utils/todos/getTodos';
 import { TodosContext } from '../../../context/TodoContext';
 
-interface IProps {
+interface TodoFooterProps {
   todos: Todo[];
   setStatus: Dispatch<SetStateAction<FilterStatuses>>;
   status: FilterStatuses;
 }
 
-export const TodoFooter: FC<IProps> = ({ todos, setStatus, status }) => {
+export const TodoFooter: FC<TodoFooterProps> = ({
+  todos,
+  setStatus,
+  status,
+}) => {
   const inColpmetedTodoCounter = getInCompletedTodos(todos).length;
 
   const { deleteCompletedTodos, onFocus } = useContext(TodosContext);

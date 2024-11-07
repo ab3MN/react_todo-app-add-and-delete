@@ -3,11 +3,11 @@ import { Todo } from '../../../types/Todo';
 import { isAllTodosCompleted } from '../../../utils/todos/getTodos';
 import { TodoForm } from '../TodoForm/TodoForm';
 
-interface TodoHeader {
+interface TodoHeaderProps {
   todos: Todo[];
 }
 
-export const TodoHeader: FC<TodoHeader> = ({ todos }) => {
+export const TodoHeader: FC<TodoHeaderProps> = ({ todos }) => {
   return (
     <header className="todoapp__header">
       {isAllTodosCompleted(todos) && (
@@ -18,7 +18,6 @@ export const TodoHeader: FC<TodoHeader> = ({ todos }) => {
         />
       )}
 
-      {/* Add a todo on form submit */}
       <TodoForm />
     </header>
   );

@@ -1,6 +1,3 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-
 import { useContext, useLayoutEffect, useMemo, useState } from 'react';
 import { FilterStatuses } from '../../utils/enums/FilterStatuses';
 import { getFiltredTodo } from '../../utils/todos/filterTodo';
@@ -10,7 +7,7 @@ import { TodoFooter } from './TodoFooter/TodoFooter';
 import { ErrorNotification } from '../ErrorNotification/ErrorNotification';
 import { TodosContext } from '../../context/TodoContext';
 
-export const Todos: React.FC = () => {
+export const Todos = () => {
   const { fetchTodos, todos } = useContext(TodosContext);
 
   const [status, setStatus] = useState<FilterStatuses>(FilterStatuses.All);

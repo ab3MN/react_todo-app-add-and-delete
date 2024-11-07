@@ -1,46 +1,12 @@
-import {
-  ChangeEvent,
-  FormEvent,
-  useContext,
-  useLayoutEffect,
-  useState,
-} from 'react';
-import { TodoErrors } from '../../../utils/enums/TodoErrors';
-import { isOnlyWhiteSpace } from '../../../utils/string/isOnlyWhiteSpace';
+import { useContext } from 'react';
+
 import { TodosContext } from '../../../context/TodoContext';
+import { useTodoForm } from '../../../hooks/useTodoForm';
 
 export const TodoForm = () => {
-  const [title, setTitle] = useState('');
-  const [isInputDisabled, setInputDisabled] = useState(false);
-  const { addTodo, showError, inputRef, onFocus } = useContext(TodosContext);
-
-  useLayoutEffect(() => {
-    !isInputDisabled && onFocus();
-  }, [isInputDisabled]);
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!title || isOnlyWhiteSpace(title)) {
-      showError(TodoErrors.title);
-      return;
-    }
-
-    setInputDisabled(true);
-
-    try {
-      await addTodo(title.trim());
-      setTitle('');
-    } catch {
-      showError(TodoErrors.add);
-    } finally {
-      setInputDisabled(false);
-    }
-  };
-
-  const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
-  };
+  const { inputRef } = useContext(TodosContext);
+  const { title, handleSubmit, handleChangeTitle, isInputDisabled } =
+    useTodoForm();
 
   return (
     <form onSubmit={handleSubmit}>
