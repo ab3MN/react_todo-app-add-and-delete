@@ -50,20 +50,13 @@ export const useTodos = (showError: (err: TodoErrors) => void) => {
   const deleteCompletedTodos = async () => {
     const completedTodos = getCompletedTodos(todos);
 
-    try {
-      const todoIds = await Promise.all(
-        completedTodos.map(({ id }) => deleteTodo(id)),
-      );
-      const validTodoIds = todoIds.filter(
-        (id): id is number => id !== undefined,
-      );
+    const todoIds = await Promise.all(
+      completedTodos.map(({ id }) => deleteTodo(id)),
+    );
+    const validTodoIds = todoIds.filter((id): id is number => id !== undefined);
 
-      if (!!validTodoIds.length) {
-        setTodos(revomesTodosById(todos, validTodoIds));
-      }
-    } catch (err) {
-      //eslint-disabled-next-line no-console
-      console.log(err);
+    if (!!validTodoIds.length) {
+      setTodos(revomesTodosById(todos, validTodoIds));
     }
   };
 
