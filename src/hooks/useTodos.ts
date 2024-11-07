@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { Todo } from '../types/Todo';
 import * as todoApi from '../api/todos';
 import { TodoErrors } from '../utils/enums/TodoErrors';
@@ -50,22 +50,33 @@ export const useTodos = (showError: (err: TodoErrors) => void) => {
   const deleteCompletedTodos = async () => {
     const completedTodos = getCompletedTodos(todos);
 
-    const todoIds = await Promise.all(
-      completedTodos.map(({ id }) => deleteTodo(id)),
-    );
-    const validTodoIds = todoIds.filter((id): id is number => id !== undefined);
+    try {
+      const todoIds = await Promise.all(
+        completedTodos.map(({ id }) => deleteTodo(id)),
+      );
+      const validTodoIds = todoIds.filter(
+        (id): id is number => id !== undefined,
+      );
 
-    if (!!validTodoIds.length) {
-      setTodos(revomesTodosById(todos, validTodoIds));
+      if (!!validTodoIds.length) {
+        setTodos(revomesTodosById(todos, validTodoIds));
+      }
+    } catch (err) {
+      // eslint-disabled-next-line no-console
+      console.log(err);
     }
   };
 
+  useLayoutEffect(() => {
+    fetchTodos();
+  }, []);
+
   return {
     todos,
+    tempTodo,
     fetchTodos,
     addTodo,
     deleteTodo,
     deleteCompletedTodos,
-    tempTodo,
   };
 };

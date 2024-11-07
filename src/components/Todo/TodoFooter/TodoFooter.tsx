@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction, useContext } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 import cn from 'classnames';
 
 import { Todo } from '../../../types/Todo';
@@ -9,7 +9,7 @@ import {
   getInCompletedTodos,
   hasCompletedTodos,
 } from '../../../utils/todos/getTodos';
-import { TodosContext } from '../../../context/TodoContext';
+import { useDeleteTodo } from '../../../hooks/useDeleteTodo';
 
 interface TodoFooterProps {
   todos: Todo[];
@@ -23,13 +23,7 @@ export const TodoFooter: FC<TodoFooterProps> = ({
   status,
 }) => {
   const inColpmetedTodoCounter = getInCompletedTodos(todos).length;
-
-  const { deleteCompletedTodos, onFocus } = useContext(TodosContext);
-
-  const handleDeleteCompletedTodos = async () => {
-    await deleteCompletedTodos();
-    onFocus();
-  };
+  const { handleDeleteCompletedTodos } = useDeleteTodo();
 
   return (
     <footer className="todoapp__footer" data-cy="Footer">

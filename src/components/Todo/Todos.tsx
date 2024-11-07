@@ -1,25 +1,15 @@
-import { useContext, useLayoutEffect, useMemo, useState } from 'react';
-import { FilterStatuses } from '../../utils/enums/FilterStatuses';
-import { getFiltredTodo } from '../../utils/todos/filterTodo';
+import { useContext } from 'react';
+
 import { TodoHeader } from './TodoHeader/TodoHeader';
 import { TodoList } from './TodoList/TodoList';
 import { TodoFooter } from './TodoFooter/TodoFooter';
 import { ErrorNotification } from '../ErrorNotification/ErrorNotification';
 import { TodosContext } from '../../context/TodoContext';
+import { useTodoFilter } from '../../hooks/useTodoFilter';
 
 export const Todos = () => {
-  const { fetchTodos, todos } = useContext(TodosContext);
-
-  const [status, setStatus] = useState<FilterStatuses>(FilterStatuses.All);
-
-  const filtredTodos = useMemo(
-    () => getFiltredTodo(todos, status),
-    [status, todos],
-  );
-
-  useLayoutEffect(() => {
-    fetchTodos();
-  }, []);
+  const { todos, error } = useContext(TodosContext);
+  const { filtredTodos, setTodoStatus, todoStatus } = useTodoFilter(todos);
 
   return (
     <div className="todoapp">
@@ -31,11 +21,15 @@ export const Todos = () => {
         <TodoList todos={filtredTodos} />
 
         {!!todos.length && (
-          <TodoFooter todos={todos} setStatus={setStatus} status={status} />
+          <TodoFooter
+            todos={todos}
+            setStatus={setTodoStatus}
+            status={todoStatus}
+          />
         )}
       </div>
 
-      <ErrorNotification />
+      <ErrorNotification error={error} />
     </div>
   );
 };

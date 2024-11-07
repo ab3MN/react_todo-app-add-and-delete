@@ -1,20 +1,20 @@
-import { useContext } from 'react';
+import { FC } from 'react';
 import { getTodoErrorsMessage } from '../../utils/todos/getTodoErrorsMessage';
 import cn from 'classnames';
-import { TodosContext } from '../../context/TodoContext';
+import { TodoErrors } from '../../utils/enums/TodoErrors';
 
-export const ErrorNotification = () => {
-  const { error } = useContext(TodosContext);
+interface ErrorNotificationProps {
+  error: TodoErrors | null;
+}
 
-  return (
-    <div
-      data-cy="ErrorNotification"
-      className={cn('notification is-danger is-light has-text-weight-normal', {
-        hidden: !error,
-      })}
-    >
-      <button data-cy="HideErrorButton" type="button" className="delete" />
-      {error && getTodoErrorsMessage(error)}
-    </div>
-  );
-};
+export const ErrorNotification: FC<ErrorNotificationProps> = ({ error }) => (
+  <div
+    data-cy="ErrorNotification"
+    className={cn('notification is-danger is-light has-text-weight-normal', {
+      hidden: !error,
+    })}
+  >
+    <button data-cy="HideErrorButton" type="button" className="delete" />
+    {error && getTodoErrorsMessage(error)}
+  </div>
+);

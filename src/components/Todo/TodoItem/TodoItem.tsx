@@ -1,7 +1,7 @@
-import { FC, useContext, useState } from 'react';
+import { FC } from 'react';
 import { Todo } from '../../../types/Todo';
 import cn from 'classnames';
-import { TodosContext } from '../../../context/TodoContext';
+import { useDeleteTodo } from '../../../hooks/useDeleteTodo';
 
 interface TodoItemProps {
   todo: Todo;
@@ -9,20 +9,9 @@ interface TodoItemProps {
 }
 
 export const TodoItem: FC<TodoItemProps> = ({ todo, isLoading = false }) => {
-  const [isDeleting, setDeliting] = useState(false);
-  const { deleteTodo, onFocus } = useContext(TodosContext);
-
-  const handleDeleteTodo = async (id: number) => {
-    setDeliting(true);
-
-    await deleteTodo(id);
-
-    setDeliting(false);
-
-    onFocus();
-  };
-
   const { completed, id, title } = todo;
+
+  const { isDeleting, handleDeleteTodo } = useDeleteTodo();
 
   return (
     <div data-cy="Todo" className={cn('todo', { completed })}>
