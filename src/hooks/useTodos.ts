@@ -58,9 +58,11 @@ export const useTodos = (showError: (err: TodoErrors) => void) => {
         (id): id is number => id !== undefined,
       );
 
-      !!validTodoIds.length && setTodos(revomesTodosById(todos, validTodoIds));
+      if (!!validTodoIds.length) {
+        setTodos(revomesTodosById(todos, validTodoIds));
+      }
     } catch (err) {
-      //eslint disabled next line no console
+      //eslint-disabled-next-line no-console
       console.log(err);
     }
   };

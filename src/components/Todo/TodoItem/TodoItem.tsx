@@ -26,6 +26,7 @@ export const TodoItem: FC<TodoItemProps> = ({ todo, isLoading = false }) => {
 
   return (
     <div data-cy="Todo" className={cn('todo', { completed })}>
+      {/* eslint-disable jsx-a11y/label-has-associated-control */}
       <label className="todo__status-label">
         <input
           data-cy="TodoStatus"

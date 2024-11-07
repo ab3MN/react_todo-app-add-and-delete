@@ -17,7 +17,9 @@ export const useTodoForm = () => {
   const [title, setTitle] = useState('');
 
   useLayoutEffect(() => {
-    !isInputDisabled && onFocus();
+    if (!isInputDisabled) {
+      onFocus();
+    }
   }, [isInputDisabled]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
