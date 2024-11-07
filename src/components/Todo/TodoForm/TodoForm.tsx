@@ -3,7 +3,6 @@ import {
   FormEvent,
   useContext,
   useLayoutEffect,
-  useRef,
   useState,
 } from 'react';
 import { TodoErrors } from '../../../utils/enums/TodoErrors';
@@ -13,13 +12,10 @@ import { TodosContext } from '../../../context/TodoContext';
 export const TodoForm = () => {
   const [title, setTitle] = useState('');
   const [isInputDisabled, setInputDisabled] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const { addTodo, showError } = useContext(TodosContext);
+  const { addTodo, showError, inputRef, onFocus } = useContext(TodosContext);
 
   useLayoutEffect(() => {
-    if (inputRef.current && !isInputDisabled) {
-      inputRef.current.focus();
-    }
+    !isInputDisabled && onFocus();
   }, [isInputDisabled]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -40,16 +36,6 @@ export const TodoForm = () => {
     } finally {
       setInputDisabled(false);
     }
-    // addTodo(title.trim())
-    //   .then(() => {
-    //     setTitle('');
-    //   })
-    //   .catch(() => {
-    //     showError(TodoErrors.add);
-    //   })
-    //   .finally(() => {
-    //     setInputDisabled(false);
-    //   });
   };
 
   const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {

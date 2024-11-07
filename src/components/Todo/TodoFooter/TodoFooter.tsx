@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction } from 'react';
+import { Dispatch, FC, SetStateAction, useContext } from 'react';
 import cn from 'classnames';
 
 import { Todo } from '../../../types/Todo';
@@ -9,6 +9,7 @@ import {
   getInCompletedTodos,
   hasCompletedTodos,
 } from '../../../utils/todos/getTodos';
+import { TodosContext } from '../../../context/TodoContext';
 
 interface IProps {
   todos: Todo[];
@@ -18,6 +19,13 @@ interface IProps {
 
 export const TodoFooter: FC<IProps> = ({ todos, setStatus, status }) => {
   const inColpmetedTodoCounter = getInCompletedTodos(todos).length;
+
+  const { deleteCompletedTodos, onFocus } = useContext(TodosContext);
+
+  const handleDeleteCompletedTodos = async () => {
+    await deleteCompletedTodos();
+    onFocus();
+  };
 
   return (
     <footer className="todoapp__footer" data-cy="Footer">
@@ -46,6 +54,7 @@ export const TodoFooter: FC<IProps> = ({ todos, setStatus, status }) => {
         className="todoapp__clear-completed"
         data-cy="ClearCompletedButton"
         disabled={!hasCompletedTodos(todos)}
+        onClick={handleDeleteCompletedTodos}
       >
         Clear completed
       </button>

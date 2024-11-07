@@ -1,8 +1,13 @@
+import { FC } from 'react';
 import { Todo } from '../../../types/Todo';
 import { isAllTodosCompleted } from '../../../utils/todos/getTodos';
 import { TodoForm } from '../TodoForm/TodoForm';
 
-export const TodoHeader = ({ todos }: { todos: Todo[] }) => {
+interface TodoHeader {
+  todos: Todo[];
+}
+
+export const TodoHeader: FC<TodoHeader> = ({ todos }) => {
   return (
     <header className="todoapp__header">
       {isAllTodosCompleted(todos) && (

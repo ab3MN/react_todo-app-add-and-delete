@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react';
+import { FC, useContext, useState } from 'react';
 import { Todo } from '../../../types/Todo';
 import cn from 'classnames';
 import { TodosContext } from '../../../context/TodoContext';
@@ -9,7 +9,18 @@ interface IProps {
 }
 
 export const TodoItem: FC<IProps> = ({ todo, isLoading = false }) => {
-  const { deleteTodo } = useContext(TodosContext);
+  const [isDeleting, setDeliting] = useState(false);
+  const { deleteTodo, onFocus } = useContext(TodosContext);
+
+  const handleDeleteTodo = async (id: number) => {
+    setDeliting(true);
+
+    await deleteTodo(id);
+
+    setDeliting(false);
+
+    onFocus();
+  };
 
   const { completed, id, title } = todo;
 
@@ -34,14 +45,14 @@ export const TodoItem: FC<IProps> = ({ todo, isLoading = false }) => {
         type="button"
         className="todo__remove"
         data-cy="TodoDelete"
-        onClick={() => deleteTodo(id)}
+        onClick={() => handleDeleteTodo(id)}
       >
         ×
       </button>
       <div
         data-cy="TodoLoader"
         className={cn('modal overlay', {
-          'is-active': isLoading,
+          'is-active': isLoading || isDeleting,
         })}
       >
         <div className="modal-background has-background-white-ter" />
